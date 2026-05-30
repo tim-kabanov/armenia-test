@@ -1,8 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6efe1">
+<title>Тест на гражданство Армении · тренажёр</title>
+</head>
+<body>
 <div id="root"></div>
-
+ 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Spectral:wght@400;500;600&display=swap');
-
+ 
 :root{
   --paper:#f6efe1;
   --paper-2:#efe5d2;
@@ -21,11 +30,11 @@
   --wrong-bg:#f4e0dc;
   --shadow:0 18px 40px -20px rgba(43,32,24,.45);
 }
-
+ 
 *{box-sizing:border-box;margin:0;padding:0}
-
+ 
 html,body{background:var(--paper);color:var(--ink)}
-
+ 
 #root{
   font-family:'Spectral',Georgia,serif;
   min-height:100vh;
@@ -39,9 +48,9 @@ html,body{background:var(--paper);color:var(--ink)}
   content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
 }
-
+ 
 .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:32px 22px 80px}
-
+ 
 /* ---- masthead ---- */
 .mast{text-align:center;padding:18px 0 8px}
 .crest{
@@ -67,7 +76,7 @@ h1{
 h1 em{font-style:italic;color:var(--crimson)}
 .sub{color:var(--ink-soft);margin-top:12px;font-size:15px;max-width:30em;margin-inline:auto}
 .rule{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:26px 0}
-
+ 
 /* ---- card ---- */
 .card{
   background:linear-gradient(180deg,#fbf6ea,#f4ebd9);
@@ -78,7 +87,7 @@ h1 em{font-style:italic;color:var(--crimson)}
   content:"";position:absolute;top:0;left:0;right:0;height:4px;
   background:linear-gradient(90deg,var(--crimson),var(--apricot),var(--ultramarine));
 }
-
+ 
 /* ---- start screen ---- */
 .modes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
 .mode{
@@ -89,7 +98,7 @@ h1 em{font-style:italic;color:var(--crimson)}
 .mode .mt{font-family:'Fraunces';font-size:21px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:9px}
 .mode .md{font-size:13.5px;color:var(--ink-soft);line-height:1.45}
 .mode .ic{font-size:22px}
-
+ 
 .opts{margin-top:22px;display:flex;flex-direction:column;gap:2px}
 .opt{display:flex;align-items:center;justify-content:space-between;padding:13px 4px;border-bottom:1px dashed var(--line)}
 .opt:last-child{border-bottom:none}
@@ -99,7 +108,7 @@ h1 em{font-style:italic;color:var(--crimson)}
 .toggle::after{content:"";position:absolute;top:2px;left:2px;width:21px;height:21px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:.2s}
 .toggle.on{background:var(--apricot)}
 .toggle.on::after{left:23px}
-
+ 
 /* ---- buttons ---- */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
@@ -111,7 +120,7 @@ h1 em{font-style:italic;color:var(--crimson)}
 .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
 .btn-ghost:hover{border-color:var(--apricot);background:rgba(255,255,255,.4)}
 .btn-row{display:flex;gap:12px;margin-top:24px}
-
+ 
 /* ---- quiz header ---- */
 .qtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;font-size:13px;color:var(--ink-soft)}
 .qtop .badge{font-family:'Fraunces';font-weight:600;font-size:15px;color:var(--ink)}
@@ -119,12 +128,12 @@ h1 em{font-style:italic;color:var(--crimson)}
 .score-pill.zero{background:var(--paper-2);color:var(--ink-soft)}
 .progress{height:7px;background:var(--paper-2);border-radius:10px;overflow:hidden;margin-bottom:24px;border:1px solid var(--line)}
 .progress i{display:block;height:100%;background:linear-gradient(90deg,var(--apricot),var(--crimson));transition:width .4s ease;border-radius:10px}
-
+ 
 /* ---- question ---- */
 .q-hy{font-family:'Fraunces';font-weight:600;font-size:clamp(20px,4.5vw,26px);line-height:1.32;margin-bottom:8px}
 .q-tr{font-style:italic;color:var(--ultramarine);font-size:15px;margin-bottom:4px}
 .q-ru{color:var(--ink-soft);font-size:14px;margin-bottom:22px}
-
+ 
 .answers{display:flex;flex-direction:column;gap:11px}
 .ans{
   text-align:left;border:1px solid var(--line);border-radius:14px;padding:14px 16px;
@@ -136,26 +145,27 @@ h1 em{font-style:italic;color:var(--crimson)}
   flex:none;width:27px;height:27px;border-radius:8px;background:var(--paper-2);
   display:grid;place-items:center;font-family:'Fraunces';font-weight:600;font-size:14px;color:var(--ink-soft);transition:.15s
 }
-.ans .atext .ahy{font-weight:500;font-size:15.5px;line-height:1.35}
-.ans .atext .atr{font-style:italic;color:var(--ultramarine);font-size:13px;margin-top:3px;opacity:.9}
-.ans .atext .aru{color:var(--ink-soft);font-size:12.5px;margin-top:2px}
+.ans .atext{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.ans .atext .ahy{display:block;font-weight:600;font-size:16px;line-height:1.4}
+.ans .atext .atr{display:block;font-style:italic;color:var(--ultramarine);font-size:13.5px;line-height:1.4;opacity:.95}
+.ans .atext .aru{display:block;color:var(--ink-soft);font-size:13px;line-height:1.4}
 .ans.locked{cursor:default}
 .ans.correct{border-color:var(--correct);background:var(--correct-bg)}
 .ans.correct .letter{background:var(--correct);color:#fff}
 .ans.wrong{border-color:var(--wrong);background:var(--wrong-bg)}
 .ans.wrong .letter{background:var(--wrong);color:#fff}
 .ans .mark{margin-left:auto;font-size:18px;align-self:center}
-
+ 
 .feedback{margin-top:18px;padding:13px 16px;border-radius:12px;font-size:14px;display:none;align-items:center;gap:9px}
 .feedback.show{display:flex}
 .feedback.ok{background:var(--correct-bg);color:var(--correct)}
 .feedback.no{background:var(--wrong-bg);color:var(--wrong)}
-
+ 
 /* ---- study mode ---- */
 .study-answers .ans{cursor:default}
 .study-answers .ans.correct{border-color:var(--correct);background:var(--correct-bg)}
 .study-answers .ans.correct .letter{background:var(--correct);color:#fff}
-
+ 
 /* ---- results ---- */
 .result-num{font-family:'Fraunces';font-size:64px;font-weight:600;line-height:1;text-align:center}
 .result-num span{font-size:30px;color:var(--ink-soft)}
@@ -172,19 +182,31 @@ h1 em{font-style:italic;color:var(--crimson)}
 .rev .rline.you{color:var(--wrong)}
 .rev .rline.ok{color:var(--correct)}
 .rev .rtr{font-style:italic;color:var(--ultramarine);font-size:12.5px}
-
+ 
 .footer{text-align:center;color:var(--ink-soft);font-size:12px;margin-top:34px;line-height:1.6}
 .footer a{color:var(--crimson)}
-
+ 
 .fade{animation:fade .35s ease}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
+ 
 @media(max-width:520px){
+  .wrap{padding:20px 14px 60px}
   .modes{grid-template-columns:1fr}
-  .card{padding:22px 18px}
+  .card{padding:22px 16px}
+  h1{font-size:30px}
+  .q-hy{font-size:22px;line-height:1.3}
+  .q-tr{font-size:15px}
+  .q-ru{font-size:14px}
+  .ans{padding:15px 14px;gap:11px}
+  .ans .letter{width:26px;height:26px;font-size:13px}
+  .ans .atext .ahy{font-size:16.5px}
+  .ans .atext .atr{font-size:14px}
+  .ans .atext .aru{font-size:13.5px}
+  .btn{font-size:15.5px;padding:15px 20px}
+  .mode .mt{font-size:20px}
 }
 </style>
-
+ 
 <script>
 const DATA = [
  {hy:"Հայաստանի Հանրապետությունում իշխանությունը պատկանում է",tr:"hайастани hанрапетутьюнум ишханутьюнə патканум э",ru:"Власть в РА принадлежит",a:[
@@ -320,10 +342,10 @@ const DATA = [
    {hy:"մարզպետները և նախարարները",tr:"марзпетнерə ев нахарарнерə",ru:"губернаторы и министры",c:0},
    {hy:"ՀՀ Ազգային ժողովը",tr:"азгайин жоговə",ru:"Национальное собрание РА",c:1}]},
 ];
-
+ 
 const PASS = 17;
 const LETTERS = ["Ա","Բ","Գ"];
-
+ 
 let S = {
   mode:null,          // 'quiz' | 'study'
   showTr:true,
@@ -336,15 +358,15 @@ let S = {
   picked:null,
   wrong:[],
 };
-
+ 
 const root = document.getElementById('root');
-
+ 
 function shuffle(arr){
   const a=arr.slice();
   for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
   return a;
 }
-
+ 
 function mast(){
   return `<header class="mast">
     <div class="crest"><div class="bars"><i></i><i></i><i></i></div></div>
@@ -353,11 +375,11 @@ function mast(){
     <p class="sub">Тренажёр по 33 вопросам о Конституции РА. Для прохождения нужно правильно ответить минимум на ${PASS} из 33.</p>
   </header>`;
 }
-
+ 
 function footer(){
   return `<p class="footer">Вопросы — официальный перечень по Конституции РА.<br>С 2026 г. процедура переведена в электронный формат: сверяйтесь на <a href="https://mcs-citizenship.am" target="_blank" rel="noopener">mcs-citizenship.am</a></p>`;
 }
-
+ 
 function renderStart(){
   root.innerHTML = `<div class="wrap fade">
     ${mast()}
@@ -373,7 +395,7 @@ function renderStart(){
           <div class="md">Просмотр всех вопросов с уже отмеченными правильными ответами. Без оценки — для зубрёжки.</div>
         </button>
       </div>
-
+ 
       <div class="opts">
         <div class="opt">
           <div><div class="ol">Транскрипция</div><div class="od">Русское произношение под армянским</div></div>
@@ -391,7 +413,7 @@ function renderStart(){
     </div>
     ${footer()}
   </div>`;
-
+ 
   root.querySelectorAll('.toggle').forEach(t=>{
     t.onclick=()=>{const k=t.dataset.t;S[k]=!S[k];t.classList.toggle('on');};
   });
@@ -399,7 +421,7 @@ function renderStart(){
     b.onclick=()=>{startSession(b.dataset.m);};
   });
 }
-
+ 
 function startSession(mode){
   S.mode=mode;
   S.idx=0;S.score=0;S.answered=false;S.picked=null;S.wrong=[];
@@ -407,7 +429,7 @@ function startSession(mode){
   S.order = (mode==='quiz' && S.shuffleQ) ? shuffle(base) : base;
   if(mode==='study') renderStudy(); else renderQuiz();
 }
-
+ 
 function answersHtml(q,{study=false}={}){
   return `<div class="answers ${study?'study-answers':''}">` + q.a.map((ans,i)=>{
     let cls='ans';
@@ -423,13 +445,13 @@ function answersHtml(q,{study=false}={}){
     </button>`;
   }).join('') + `</div>`;
 }
-
+ 
 function questionBlock(q){
   return `<div class="q-hy">${q.hy}</div>
     ${S.showTr?`<div class="q-tr">${q.tr}</div>`:''}
     ${S.showRu?`<div class="q-ru">${q.ru}</div>`:''}`;
 }
-
+ 
 /* ---------- QUIZ ---------- */
 function renderQuiz(){
   const qi=S.order[S.idx];
@@ -451,9 +473,9 @@ function renderQuiz(){
     </div>
     ${footer()}
   </div>`;
-
+ 
   root.querySelector('#quit').onclick=renderStart;
-
+ 
   root.querySelectorAll('.ans').forEach(b=>{
     b.onclick=()=>{
       if(S.answered)return;
@@ -481,7 +503,7 @@ function renderQuiz(){
     };
   });
 }
-
+ 
 /* ---------- STUDY ---------- */
 function renderStudy(){
   const cards=S.order.map((qi,n)=>{
@@ -510,7 +532,7 @@ function renderStudy(){
   root.querySelector('#toquiz').onclick=()=>startSession('quiz');
   window.scrollTo(0,0);
 }
-
+ 
 /* ---------- RESULT ---------- */
 function renderResult(){
   const passed=S.score>=PASS;
@@ -518,7 +540,7 @@ function renderResult(){
   const circ=2*Math.PI*66;
   const dash=circ*pct;
   const col=passed?'var(--correct)':'var(--crimson)';
-
+ 
   const review = S.wrong.map(w=>{
     const q=DATA[w.qi];
     const correctI=q.a.findIndex(x=>x.c);
@@ -529,7 +551,7 @@ function renderResult(){
       ${S.showTr?`<div class="rtr">${q.a[correctI].tr}</div>`:''}
     </div>`;
   }).join('');
-
+ 
   root.innerHTML=`<div class="wrap fade">
     ${mast()}
     <div class="rule"></div>
@@ -548,12 +570,12 @@ function renderResult(){
       <div class="verdict-sub">${passed
         ? `Вы набрали проходной балл (нужно ${PASS}+).`
         : `Нужно минимум ${PASS} правильных. Не хватает ${PASS-S.score}. Ещё немного практики!`}</div>
-
+ 
       <div class="btn-row">
         <button class="btn btn-ghost" id="menu">В меню</button>
         <button class="btn btn-primary" id="again">Пройти заново</button>
       </div>
-
+ 
       ${S.wrong.length?`<div class="review-h">📝 Разбор ошибок (${S.wrong.length})</div>${review}`:`<div class="review-h" style="color:var(--correct)">✓ Без единой ошибки — превосходно!</div>`}
     </div>
     ${footer()}
@@ -562,6 +584,8 @@ function renderResult(){
   root.querySelector('#again').onclick=()=>startSession('quiz');
   window.scrollTo(0,0);
 }
-
+ 
 renderStart();
 </script>
+</body>
+</html>
