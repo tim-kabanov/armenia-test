@@ -189,6 +189,27 @@ h1 em{font-style:italic;color:var(--crimson)}
 .banks .bank:hover{color:#5a3a20}
 .banks .bank.active{background:#fff;color:#8a2a2a;box-shadow:0 1px 3px rgba(80,30,10,.18)}
 .bankdesc{font-size:14px;color:#7a5e40;text-align:center;margin:0 4px 18px;line-height:1.45;font-style:italic}
+
+.card.mini{margin-top:14px;padding:18px 18px 16px}
+.mini-title{display:flex;align-items:center;gap:8px;font-family:var(--serif);font-size:18px;font-weight:600;color:#4a2a1a;margin-bottom:6px}
+.mini-title .ic{font-size:20px}
+.mini-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.mini-desc{font-size:14px;color:#5a4630;margin-bottom:14px;line-height:1.5}
+.mini-btns{display:flex;gap:10px}
+.btn-mini{flex:1;padding:11px 12px;border:1px solid rgba(140,90,50,.25);background:rgba(255,250,243,.6);color:#5a3a20;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-mini:hover{background:#fff;border-color:rgba(140,90,50,.5);color:#3a2010}
+
+.hclear{background:none;border:0;color:#a0856a;font-family:inherit;font-size:12px;cursor:pointer;text-decoration:underline;padding:4px 6px}
+.hclear:hover{color:#8a2a2a}
+.hlist{display:flex;flex-direction:column;gap:6px}
+.hrow{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center;padding:9px 11px;background:rgba(120,80,40,.05);border-radius:8px;font-size:13px}
+.hdate{color:#5a4630;font-weight:500}
+.hbank{color:#7a5e40;font-size:12px;font-weight:600;letter-spacing:.3px;background:rgba(120,80,40,.10);padding:2px 8px;border-radius:6px;min-width:32px;text-align:center}
+.hscore{font-weight:700;color:#3a2010;font-variant-numeric:tabular-nums}
+.hscore .hsub{font-weight:400;color:#9a7a5a;font-size:11px}
+.hbadge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-size:13px;font-weight:700}
+.hbadge.ok{background:var(--correct);color:#fff}
+.hbadge.fail{background:var(--crimson);color:#fff}
 </style>
 
 <script>
@@ -342,13 +363,41 @@ const BANKS = {
 
 function bank(){ return BANKS[S.bank]; }
 function bankOrder(){ return bank().order; }
-function bankPass(){ return bank().pass; }
+function bankPass(){ return S.isMistakes ? S.order.length : bank().pass; }
 function bankN(){ return bank().order.length; }
+
+/* ---------- ИСТОРИЯ И РАБОТА НАД ОШИБКАМИ ---------- */
+const HKEY='qcitiz_history';
+function loadHistory(){try{return JSON.parse(localStorage.getItem(HKEY))||[];}catch(e){return [];}}
+function saveAttempt(entry){
+  const h=loadHistory(); h.unshift(entry);
+  if(h.length>30) h.length=30;
+  try{localStorage.setItem(HKEY,JSON.stringify(h));}catch(e){}
+}
+function clearHistory(){try{localStorage.removeItem(HKEY);}catch(e){}}
+function lastMistakes(){
+  const h=loadHistory();
+  return (h[0] && h[0].wrong) || [];
+}
+function fmtDate(iso){
+  const d=new Date(iso), t=new Date();
+  const time=d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+  const sameDay=d.toDateString()===t.toDateString();
+  const y=new Date(t); y.setDate(y.getDate()-1);
+  const sameYest=d.toDateString()===y.toDateString();
+  if(sameDay) return 'сегодня, '+time;
+  if(sameYest) return 'вчера, '+time;
+  const months=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+  return d.getDate()+' '+months[d.getMonth()]+', '+time;
+}
+function bankLabel(b){return b==='mistakes' ? 'ошибки' : b;}
+
 
 const LETTERS = ["Ա","Բ","Գ"];
 
 let S = {
   bank:"33",          // '33' | '67' | '135'
+  isMistakes:false,   // режим работы над ошибками
   mode:null,          // 'quiz' | 'study'
   showTr:true,
   showRu:true,
@@ -374,7 +423,9 @@ function mast(){
     <div class="crest"><div class="bars"><i></i><i></i><i></i></div></div>
     <div class="kicker">Քաղաքացիության թեստ · 2026</div>
     <h1>Тест на гражданство <em>Армении</em></h1>
-    <p class="sub">Тренажёр по Конституции РА. Выбран режим: <b>${bankN()} вопросов</b>. Для прохождения — минимум <b>${bankPass()}</b>.</p>
+    <p class="sub">${S.isMistakes
+    ? `Работа над ошибками: <b>${S.order.length} вопросов</b> из прошлой попытки.`
+    : `Тренажёр по Конституции РА. Выбран режим: <b>${bankN()} вопросов</b>. Для прохождения — минимум <b>${bankPass()}</b>.`}</p>
   </header>`;
 }
 
@@ -383,6 +434,7 @@ function footer(){
 }
 
 function renderStart(){
+  S.isMistakes=false;
   root.innerHTML = `<div class="wrap fade">
     ${mast()}
     <div class="rule"></div>
@@ -420,6 +472,8 @@ function renderStart(){
         </div>
       </div>
     </div>
+    ${renderMistakesCard()}
+    ${renderHistoryCard()}
     ${footer()}
   </div>`;
 
@@ -432,13 +486,64 @@ function renderStart(){
   root.querySelectorAll('.mode').forEach(b=>{
     b.onclick=()=>{startSession(b.dataset.m);};
   });
+  root.querySelectorAll('[data-mi]').forEach(b=>{
+    b.onclick=()=>{startMistakes(b.dataset.mi);};
+  });
+  const hc=root.querySelector('#hclear');
+  if(hc) hc.onclick=()=>{
+    if(confirm('Удалить всю историю прохождений?')){clearHistory(); renderStart();}
+  };
+}
+
+function renderMistakesCard(){
+  const w=lastMistakes();
+  if(!w.length) return '';
+  return `<div class="card mini">
+    <div class="mini-title"><span class="ic">🎯</span>Работа над ошибками</div>
+    <div class="mini-desc">В прошлой попытке остались неправильные: <b>${w.length}</b>. Прогоним их отдельно?</div>
+    <div class="mini-btns">
+      <button class="btn-mini" data-mi="quiz">✍️ Тест</button>
+      <button class="btn-mini" data-mi="study">📖 Учить</button>
+    </div>
+  </div>`;
+}
+
+function renderHistoryCard(){
+  const h=loadHistory();
+  if(!h.length) return '';
+  const rows=h.slice(0,8).map(e=>{
+    const ok=e.passed;
+    return `<div class="hrow">
+      <div class="hdate">${fmtDate(e.ts)}</div>
+      <div class="hbank">${bankLabel(e.bank)}</div>
+      <div class="hscore">${e.score}<span class="hsub">/${e.total}</span></div>
+      <div class="hbadge ${ok?'ok':'fail'}">${ok?'✓':'✕'}</div>
+    </div>`;
+  }).join('');
+  return `<div class="card mini">
+    <div class="mini-title-row">
+      <div class="mini-title"><span class="ic">📜</span>История</div>
+      <button class="hclear" id="hclear">очистить</button>
+    </div>
+    <div class="hlist">${rows}</div>
+  </div>`;
+}
+
+function startMistakes(mode){
+  const w=lastMistakes();
+  if(!w.length) return;
+  S.isMistakes=true;
+  S.order=w.slice();
+  startSession(mode);
 }
 
 function startSession(mode){
   S.mode=mode;
   S.idx=0;S.score=0;S.answered=false;S.picked=null;S.wrong=[];
-  const base = bankOrder().slice();
-  S.order = (mode==='quiz' && S.shuffleQ) ? shuffle(base) : base;
+  if(!S.isMistakes){
+    const base = bankOrder().slice();
+    S.order = (mode==='quiz' && S.shuffleQ) ? shuffle(base) : base;
+  }
   if(mode==='study') renderStudy(); else renderQuiz();
 }
 
@@ -548,6 +653,16 @@ function renderStudy(){
 /* ---------- RESULT ---------- */
 function renderResult(){
   const passed=S.score>=bankPass();
+  // сохраняем попытку в локальную историю
+  const wrongIdxs = S.wrong.map(w=>S.order[w.qi]);
+  saveAttempt({
+    ts: new Date().toISOString(),
+    bank: S.isMistakes ? 'mistakes' : S.bank,
+    score: S.score,
+    total: S.order.length,
+    passed: passed,
+    wrong: wrongIdxs
+  });
   const pct=S.score/S.order.length;
   const circ=2*Math.PI*66;
   const dash=circ*pct;
